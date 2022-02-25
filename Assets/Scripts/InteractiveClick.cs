@@ -38,14 +38,7 @@ namespace Assets.Scripts {
 
 		#region Private Methods
 		protected override void _OnPointerDown() {
-			Debug.Log($"click: {this}");
-			if (invert && selected) {
-				selected = false;
-				ResetAction();
-			} else {
-				selected = true;
-				sucess.Invoke();
-			}
+			sucess.Invoke();
 		}
 		#endregion
 

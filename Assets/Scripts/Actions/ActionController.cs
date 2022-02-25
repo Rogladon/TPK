@@ -2,41 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Assets.Scripts {
 	public class ActionController : MonoBehaviour {
+		[System.Serializable] 
 		private class ActionIteration {
-			private IAction action;
-			private List<int> indexes;
-
-			public ActionIteration(IAction a, int index, ActionController controller) {
-				Debug.Log($"Create action: {action} index: {index}");
-				action = a;
-				indexes = new List<int>() { index };
-				action.sucess.AddListener(() => Check(controller));
-			}
-			public void AddIndex(int index) {
-				Debug.Log($"Add index action: {action} index: {index}");
-				indexes.Add(index);
-			}
-			public void Check(ActionController controller) {
-				controller.Check(action, indexes);
-			}
-			public bool Equals(IAction a) {
-				return a == action;
-			}
+			public GameObject actionObject;
+			public UnityEvent actionEvent;
+			public IAction action => actionObject.GetComponent<IAction>();
+			public int index { get; set; }
+			
 		}
 
 		#region Fields
-		[SerializeField] private List<GameObject> actionsObjects;
-		private List<ActionIteration> iteration = new List<ActionIteration>();
+		[SerializeField] private List<ActionIteration> actionsObjects;
+		private Dictionary<IAction, List<ActionIteration>> iteration = new Dictionary<IAction, List<ActionIteration>>();
 
 		private int iter = 0;
 		#endregion
 
 		#region Properties
-		private List<IAction> actions => actionsObjects.Where(p => p.TryGetComponent(out IAction a))
-			.Select(p => p.GetComponent<IAction>()).ToList();
+
+		public int currentIteration => iter;
 		#endregion
 
 		#region Public Methods
@@ -45,22 +33,26 @@ namespace Assets.Scripts {
 
 		#region Private Methods
 		private void Awake() {
-			actions.Select((p, i) => new { p = p, i = i })
+			actionsObjects.Select((p, i) => new { p = p, i = i })
 				.ForEach(p => {
-					Debug.Log($"Start added action: {p.p}");
-					var i = iteration.FirstOrDefault(c => c.Equals(p.p));
-					if (i != default(ActionIteration)) i.AddIndex(p.i);
-					else iteration.Add(new ActionIteration(p.p, p.i, this));
+					p.p.index = p.i;
+					if (!iteration.ContainsKey(p.p.action)) {
+						iteration[p.p.action] = new List<ActionIteration>();
+					}
+					iteration[p.p.action].Add(p.p);
 				});
+			iteration.ForEach(p => p.Key.sucess.AddListener(() => Check(p.Value, p.Key)));
 		}
 
-		private void Check(IAction action, List<int> indexes) {
-			if(indexes.Contains(iter)) {
-				Debug.Log($"sucess action for iter: {iter}");
+		private void Check(List<ActionIteration> actions, IAction a) {
+			ActionIteration action = null;
+			if((action = actions.FirstOrDefault(p => p.index == iter)) != null) {
+				Debug.Log($"sucess: {iter}");
+				action.actionEvent.Invoke();
 				iter++;
 			} else {
-				Debug.Log($"error action iter: {iter}, index: {indexes}");
-				action.ResetAction();
+				Debug.Log($"error: {iter}");
+				a.ResetAction();
 			}
 		}
 		#endregion

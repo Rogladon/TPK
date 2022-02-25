@@ -42,15 +42,16 @@ namespace Assets.Scripts {
 				IInteractable interactable = null;
 				if(hit.transform.TryGetComponent(out interactable)) {
 					selectCursor.Apply();
-					if(currentInteractable != null && interactable != currentInteractable) {
+					if(interactable != currentInteractable) {
 						interactable.OnPointerEnter();
-						currentInteractable.OnPointerExit();
+						currentInteractable?.OnPointerExit();
 					}
 					if (Input.GetMouseButtonDown(0)) interactable.OnPointerDown();
 					currentInteractable = interactable;
 				} else {
 					defaultCursor.Apply();
 					if (currentInteractable != null) currentInteractable.OnPointerExit();
+					currentInteractable = null;
 				}
 				if (Input.GetMouseButtonUp(0)) {
 					if (currentInteractable != null) currentInteractable.OnPointerUp();
