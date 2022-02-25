@@ -10,27 +10,42 @@ namespace Assets.Scripts {
 
 
 		#region Fields
+		[Header("Action Events")]
 		[SerializeField] private UnityEvent actionSucess;
 		[SerializeField] private UnityEvent actionError;
+		[SerializeField] private UnityEvent actionReset;
+		[Header("Config")]
+		[SerializeField] private bool invert;
+
+		private bool selected;
 		#endregion
 
 		#region Properties
 		public UnityEvent sucess => actionSucess;
 
 		public UnityEvent error => actionError;
+		public UnityEvent reset => actionReset;
 		#endregion
 
 		#region Public Methods
 
 
 		public void ResetAction() {
-			throw new NotImplementedException();
+			reset.Invoke();
+			Debug.Log($"ResetACtion for object: {this}");
 		}
 		#endregion
 
 		#region Private Methods
 		protected override void _OnPointerDown() {
-			sucess.Invoke();
+			Debug.Log($"click: {this}");
+			if (invert && selected) {
+				selected = false;
+				ResetAction();
+			} else {
+				selected = true;
+				sucess.Invoke();
+			}
 		}
 		#endregion
 

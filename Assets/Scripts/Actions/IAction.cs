@@ -9,6 +9,7 @@ namespace Assets.Scripts {
 	public interface IAction {
 		public UnityEvent sucess { get; }
 		public UnityEvent error { get; }
+		public UnityEvent reset { get; }
 
 		public void ResetAction();
 	}

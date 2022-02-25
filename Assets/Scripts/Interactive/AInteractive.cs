@@ -8,6 +8,7 @@ namespace Assets.Scripts {
 	public class AInteractive : MonoBehaviour, IInteractable {
 
 		#region Fields
+		[Header("Interactive Events")]
 		[SerializeField] private UnityEvent _pointerDown;
 		[SerializeField] private UnityEvent _pointerUp;
 		[SerializeField] private UnityEvent _pointerEnter;
