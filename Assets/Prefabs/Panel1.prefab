@@ -216,6 +216,7 @@ MonoBehaviour:
           m_StringArgument: close
           m_BoolArgument: 0
         m_CallState: 2
+  invert: 0
 --- !u!1 &867801060389592805
 GameObject:
   m_ObjectHideFlags: 0
@@ -1651,14 +1652,6 @@ PrefabInstance:
     - target: {fileID: 4279532979688930394, guid: 8cceb44ecea8cfb4192fda2d516a7ffa, type: 3}
       propertyPath: m_RootOrder
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4279532979688930394, guid: 8cceb44ecea8cfb4192fda2d516a7ffa, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 9.749877
-      objectReference: {fileID: 0}
-    - target: {fileID: 4279532979688930394, guid: 8cceb44ecea8cfb4192fda2d516a7ffa, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 9.749877
       objectReference: {fileID: 0}
     - target: {fileID: 4279532979688930394, guid: 8cceb44ecea8cfb4192fda2d516a7ffa, type: 3}
       propertyPath: m_LocalPosition.x
