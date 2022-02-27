@@ -13,6 +13,7 @@ namespace Assets.Scripts {
 		#endregion
 
 		#region Properties
+		public MonoBehaviour mono => this;
 		public UnityEvent sucess => actionSucess;
 
 		public UnityEvent error => actionError;

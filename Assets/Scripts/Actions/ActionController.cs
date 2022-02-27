@@ -5,18 +5,12 @@ using UnityEngine;
 using UnityEngine.Events;
 
 namespace Assets.Scripts {
+	
 	public class ActionController : MonoBehaviour {
-		[System.Serializable] 
-		private class ActionIteration {
-			public GameObject actionObject;
-			public UnityEvent actionEvent;
-			public IAction action => actionObject.GetComponent<IAction>();
-			public int index { get; set; }
-			
-		}
+
 
 		#region Fields
-		[SerializeField] private List<ActionIteration> actionsObjects;
+		[SerializeField] private ActionProgramm actionProgramm;
 		private Dictionary<IAction, List<ActionIteration>> iteration = new Dictionary<IAction, List<ActionIteration>>();
 
 		private int iter = 0;
@@ -33,7 +27,7 @@ namespace Assets.Scripts {
 
 		#region Private Methods
 		private void Awake() {
-			actionsObjects.Select((p, i) => new { p = p, i = i })
+			actionProgramm.actions.Select((p, i) => new { p = p, i = i })
 				.ForEach(p => {
 					p.p.index = p.i;
 					if (!iteration.ContainsKey(p.p.action)) {
