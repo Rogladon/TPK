@@ -6,20 +6,16 @@ using UnityEngine.UI;
 namespace Assets.Scripts {
 	public class Tutorial : MonoBehaviour {
 		#region Fields
+		private const string noTutoril = "Выполните действие";
+
 		[SerializeField] private ActionProgramm actionProgramm;
 		[SerializeField] private Text tutorialOutput;
 		[SerializeField] private ActionController actionController;
 
 		private int iteration = -1;
+		private bool active = false;
 		#endregion
 
-		#region Properties
-
-		#endregion
-
-		#region Public Methods
-
-		#endregion
 
 		#region Private Methods
 		private void Update() {
@@ -29,8 +25,16 @@ namespace Assets.Scripts {
 					tutorialOutput.text = $"Конец!";
 					return;
 				}
-				tutorialOutput.text = $"{iteration+1}. {actionProgramm.actions[iteration].tutorial}";
+				tutorialOutput.text = $"{iteration+1}. {(active?actionProgramm.actions[iteration].tutorial:noTutoril)}";
 			}
+		}
+		public void SetActive(bool active) {
+			this.active = active;
+		}
+		public  void SetProgramm(ActionProgramm programm) {
+			iteration = -1;
+			SetActive(true);
+			actionProgramm = programm;
 		}
 		#endregion
 	}

@@ -11,6 +11,8 @@ namespace Assets.Scripts {
 
 		#region Fields
 		[Header("Action Events")]
+		[SerializeField] private UnityEvent animSucess;
+		[SerializeField] private UnityEvent animInvert;
 		[SerializeField] private UnityEvent actionSucess;
 		[SerializeField] private UnityEvent actionError;
 		[SerializeField] private UnityEvent actionReset;
@@ -32,6 +34,8 @@ namespace Assets.Scripts {
 
 
 		public void ResetAction() {
+			animInvert.Invoke();
+			selected = false;
 			reset.Invoke();
 			Debug.Log($"ResetACtion for object: {this}");
 		}
@@ -39,6 +43,13 @@ namespace Assets.Scripts {
 
 		#region Private Methods
 		protected override void _OnPointerDown() {
+			if (invert) {
+				if (selected) animInvert.Invoke();
+				else animSucess.Invoke();
+				selected = !selected;
+			} else {
+				animSucess.Invoke();
+			}
 			sucess.Invoke();
 		}
 		#endregion

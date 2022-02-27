@@ -22,11 +22,9 @@ namespace Assets.Scripts {
 		#endregion
 
 		#region Public Methods
-
-		#endregion
-
-		#region Private Methods
-		private void Awake() {
+		public void StartProgramm(ActionProgramm p) {
+			iteration = new Dictionary<IAction, List<ActionIteration>>();
+			iter = 0;
 			actionProgramm.actions.Select((p, i) => new { p = p, i = i })
 				.ForEach(p => {
 					p.p.index = p.i;
@@ -36,6 +34,13 @@ namespace Assets.Scripts {
 					iteration[p.p.action].Add(p.p);
 				});
 			iteration.ForEach(p => p.Key.sucess.AddListener(() => Check(p.Value, p.Key)));
+		}
+		#endregion
+
+		#region Private Methods
+		[ContextMenu("StartProgramm")]
+		private void _StartProgramm() {
+			StartProgramm(actionProgramm);
 		}
 
 		private void Check(List<ActionIteration> actions, IAction a) {
